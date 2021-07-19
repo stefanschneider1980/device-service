@@ -1,0 +1,146 @@
+openapi: "3.0.3"
+info:
+  description: "Service to handle devices"
+  version: "1.0.0"
+  title: "Device Service"
+  contact:
+    email: "s_schneider1980@web.de"
+
+paths:
+  /device:
+    get:
+      tags:
+        - "Device-Service"
+      summary: "Delivers the full list of all devices"
+      responses:
+        "200":
+          description: "Successful Response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceList'
+        "500":
+          description: "Internal Server Error"
+
+    post:
+      tags:
+        - "Device-Service"
+      summary: "Add new Device to the list"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+      responses:
+        "201":
+          description: "Successfully added Response"
+        "500":
+          description: "Internal Server Error"
+    put:
+      tags:
+        - "Device-Service"
+      summary: "Edit existing Device"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+      responses:
+        "200":
+          description: "Successfully edit Response"
+        "500":
+          description: "Internal Server Error"
+
+  /device/{deviceId}:
+    get:
+      tags:
+        - "Device-Service"
+      summary: "Delivers a specific device by given Id"
+      parameters:
+        - name: deviceId
+          in: path
+          description: "Id of the device"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Successful Response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "404":
+          description: "Device not found"
+  /device{deviceId}:
+    delete:
+      tags:
+        - "Device-Service"
+      summary: "Delivers a specific device by given Id"
+      parameters:
+        - name: deviceId
+          in: path
+          description: "Id of the device"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Successful Response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "404":
+          description: "Device not found"
+components:
+  schemas:
+    DeviceList:
+      type: array
+      items:
+        type: object
+        properties:
+          device_id:
+            type: integer
+            description: "Device Number"
+            example: 12345
+          device_type:
+            type: string
+            description: "Type of the Device"
+            example: 'Smartphone'
+          damage_possible:
+            type: boolean
+            description: "Is damage Possible"
+            example: true
+    Device:
+      type: object
+      properties:
+        device_id:
+          type: integer
+          description: "Device Number"
+          example: 12345
+        device_type:
+          type: string
+          description: "Type of the Device"
+          example: 'Smartphone'
+        damage_possible:
+          type: boolean
+          description: "Is damage Possible"
+          example: true
+    Request:
+      type: object
+      properties:
+        device_id:
+          type: integer
+          description: "Device Number"
+          example: 12345
+        device_type:
+          type: string
+          description: "Type of the Device"
+          example: 'Smartphone'
+        damage_possible:
+          type: boolean
+          description: "Is damage Possible"
+          example: true
