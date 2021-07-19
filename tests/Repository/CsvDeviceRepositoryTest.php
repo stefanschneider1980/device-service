@@ -16,12 +16,12 @@ class CsvDeviceRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->repository = new CsvDeviceRepository();
+        $this->repository = new CsvDeviceRepository('foobar');
     }
 
     public function testInstanciated()
     {
-        $this->assertInstanceOf(DeviceRepository::class, new CsvDeviceRepository());
+        $this->assertInstanceOf(DeviceRepository::class, new CsvDeviceRepository('foobar'));
     }
 
     public function testGetDeviceReturnsCorrectDevice(): void
@@ -31,6 +31,6 @@ class CsvDeviceRepositoryTest extends TestCase
                ->setDeviceType('Smartphone')
                ->setDamagePossible(true);
 
-        $this->assertEquals($device, $this->repository->getDevice());
+        $this->assertEquals($device, $this->repository->getDevice(9000));
     }
 }

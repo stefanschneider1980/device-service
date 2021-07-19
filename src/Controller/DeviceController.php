@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\UseCase\addDevice\addDeviceInteractor;
+use App\UseCase\addDevice\AddDeviceInteractor;
 use App\UseCase\deleteDevice\DeleteDeviceInteractor;
+use App\UseCase\editDevice\EditDeviceInteractor;
 use App\UseCase\getDevice\GetDeviceInteractor;
 use App\UseCase\getDeviceList\GetDeviceListInteractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,14 +51,14 @@ class DeviceController extends AbstractController
     /**
      * @Route("/api/v1/device", methods="POST")
      */
-    public function addDevice(Request $request, addDeviceInteractor $addDeviceInteractor): Response
+    public function addDevice(Request $request, AddDeviceInteractor $addDeviceInteractor): Response
     {
         $requestContent = json_decode($request->getContent(), true);
 
         $addDeviceRequest = new \stdClass();
         $addDeviceRequest->deviceId = (int)$requestContent['deviceId'];
         $addDeviceRequest->deviceType = $requestContent['deviceType'];
-        $addDeviceRequest->isDamagePossible = $requestContent['isDamagePossible'];;
+        $addDeviceRequest->isDamagePossible = $requestContent['isDamagePossible'];
 
         try {
             $addDeviceInteractor->execute($addDeviceRequest);
@@ -71,9 +72,25 @@ class DeviceController extends AbstractController
     /**
      * @Route("/api/v1/device", methods="PUT")
      */
-    public function editDevice(): Response
+    public function editDevice(Request $request, EditDeviceInteractor $editDeviceInteractor): Response
     {
-        return new Response('edit device');
+        $requestContent = json_decode($request->getContent(), true);
+
+        $editDeviceRequest = new \stdClass();
+        $editDeviceRequest->deviceId = (int)$requestContent['deviceId'];
+        $editDeviceRequest->deviceType = $requestContent['deviceType'];
+        $editDeviceRequest->isDamagePossible = $requestContent['isDamagePossible'];
+
+        try {
+            $result = $editDeviceInteractor->execute($editDeviceRequest);
+
+            if (!$result) {
+                throw new \Exception('Error Occured');
+            }
+            return new JsonResponse('Edit was Successful', 200);
+        } catch (Throwable $exception) {
+            return new Response($exception->getMessage(), 500);
+        }
     }
 
     /**

@@ -2,10 +2,9 @@
 
 namespace App\UseCase\deleteDevice;
 
-
 use App\Repository\CsvDeviceRepository;
 use App\Repository\DeviceRepository;
-use App\UseCase\Entities\Device;
+use Throwable;
 
 class DeleteDeviceInteractor
 {
@@ -23,20 +22,8 @@ class DeleteDeviceInteractor
     public function execute(int $deviceId): bool
     {
         try {
-            $actualEntries = $this->repository->getDeviceList()->getDeviceList();
-            $entryList = [];
-
-            /** @var Device $entry */
-            foreach ($actualEntries as $entry) {
-                $isDamagePossible = ($entry->isDamagePossible()) ? 1 : 0;
-                $entryList[] = [$entry->getDeviceId(), $entry->getDeviceType(), $isDamagePossible];
-            }
-
-            //delete new Lin
-
-            return $this->repository->addDevice($entryList);
-
-        } catch (\Throwable $exception) {
+            return $this->repository->deleteDevice($deviceId);
+        } catch (Throwable $exception) {
             return false;
         }
     }

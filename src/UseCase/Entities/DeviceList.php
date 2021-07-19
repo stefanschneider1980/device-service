@@ -9,7 +9,7 @@ class DeviceList
     /**
      * @var Device[]
      */
-    private array $deviceList;
+    private array $deviceList = [];
 
     /**
      * @return []

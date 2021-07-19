@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\editDevice;
+namespace App\UseCase\addDevice;
 
 use App\Repository\CsvDeviceRepository;
 use App\Repository\DeviceRepository;
@@ -8,7 +8,7 @@ use App\UseCase\Entities\Device;
 use stdClass;
 use Throwable;
 
-class EditDeviceInteractor
+class AddDeviceInteractor
 {
     /** @var DeviceRepository */
     private DeviceRepository $repository;
@@ -21,15 +21,19 @@ class EditDeviceInteractor
         $this->repository = $repository;
     }
 
-    public function execute(stdClass $editDeviceRequest): bool
+    /**
+     * @param stdClass $addDeviceRequest
+     * @return bool
+     */
+    public function execute(stdClass $addDeviceRequest): bool
     {
-        $device = new Device();
-        $device->setDeviceId((int)$editDeviceRequest->deviceId);
-        $device->setDeviceType($editDeviceRequest->deviceType);
-        $device->setDamagePossible($editDeviceRequest->isDamagePossible);
+        $newDevice = new Device();
+        $newDevice->setDeviceId((int)$addDeviceRequest->deviceId);
+        $newDevice->setDeviceType($addDeviceRequest->deviceType);
+        $newDevice->setDamagePossible($addDeviceRequest->isDamagePossible);
 
         try {
-            return $this->repository->editDevice($device);
+            return $this->repository->addDevice($newDevice);
         } catch (Throwable $exception) {
             return false;
         }

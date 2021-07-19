@@ -75,7 +75,8 @@ class Device implements \JsonSerializable
         return $this;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return [
             'device_id' => $this->getDeviceId(),
             'device_type' => $this->getDeviceType(),

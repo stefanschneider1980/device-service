@@ -2,18 +2,30 @@
 
 namespace App\Tests\Repository;
 
-use App\Repository\DeviceRepository;
+use App\Repository\CsvDeviceRepository;
 use App\UseCase\Entities\Device;
 use App\UseCase\Entities\DeviceList;
 
-class CsvDeviceRepositorySpy implements DeviceRepository
+class CsvDeviceRepositorySpy extends CsvDeviceRepository
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     public $countOfCallsOfGetDevice = 0;
+
+    /** @var int */
     public $countOfCallsOfGetDeviceList = 0;
 
+    /** @var int */
+    public $countOfCallsOfAddDevice = 0;
+
+    /** @var int */
+    public $countOfCallsOfEditDevice = 0;
+
+    /** @var int */
+    public $countOfCallsOfDeleteDevice = 0;
+
+    /**
+     * @return DeviceList
+     */
     public function getDeviceList(): DeviceList
     {
         $this->countOfCallsOfGetDeviceList++;
@@ -29,7 +41,11 @@ class CsvDeviceRepositorySpy implements DeviceRepository
         return $deviceList;
     }
 
-    public function getDevice(): Device
+    /**
+     * @param $deviceNumber
+     * @return Device
+     */
+    public function getDevice($deviceNumber): Device
     {
         $this->countOfCallsOfGetDevice++;
 
@@ -41,18 +57,36 @@ class CsvDeviceRepositorySpy implements DeviceRepository
         return $device;
     }
 
-    public function addDevice(): bool
+    /**
+     * @param Device $editDevice
+     * @return bool
+     */
+    public function addDevice(Device $editDevice): bool
     {
-        // TODO: Implement addDevice() method.
+        $this->countOfCallsOfAddDevice++;
+
+        return true;
     }
 
-    public function editDevice(): bool
+    /**
+     * @param Device $editDevice
+     * @return bool
+     */
+    public function editDevice(Device $editDevice): bool
     {
-        // TODO: Implement editDevice() method.
+        $this->countOfCallsOfEditDevice++;
+
+        return true;
     }
 
-    public function deleteDevice(): bool
+    /**
+     * @param string $deviceNumber
+     * @return bool
+     */
+    public function deleteDevice(string $deviceNumber): bool
     {
-        // TODO: Implement deleteDevice() method.
+        $this->countOfCallsOfDeleteDevice++;
+
+        return true;
     }
 }

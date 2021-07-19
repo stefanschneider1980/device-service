@@ -22,15 +22,15 @@ interface DeviceRepository
     /**
      * @return bool
      */
-    public function addDevice(array $entryList): bool;
+    public function addDevice(Device $device): bool;
 
     /**
      * @return bool
      */
-    public function editDevice(): bool;
+    public function editDevice(Device $editDevice): bool;
 
     /**
      * @return bool
      */
-    public function deleteDevice(): bool;
+    public function deleteDevice(string $deviceNumber): bool;
 }
