@@ -24,12 +24,16 @@ class CsvDeviceRepository implements DeviceRepository
      */
     private string $projectPath;
 
+    /** @var string */
+    private string $csvfilename;
+
     /**
      * @param string $directory_path
      */
-    public function __construct(string $directory_path)
+    public function __construct(string $directory_path, string $csvfilename)
     {
         $this->projectPath = $directory_path;
+        $this->csvfilename = $csvfilename;
     }
 
     /**
@@ -95,7 +99,6 @@ class CsvDeviceRepository implements DeviceRepository
         try {
             $actualEntryList = $this->readDataFromCsv();
 
-            /** @var Device $entry */
             foreach ($actualEntryList as $entry) {
                 $isDamagePossible = ($entry['damage_possible']) ? 1 : 0;
                 $entryList[] = [$entry['device_id'], $entry['device_type'], $isDamagePossible];
@@ -109,7 +112,7 @@ class CsvDeviceRepository implements DeviceRepository
         $entryList[] = $newLine;
 
         try {
-            $writer = Writer::createFromPath($this->projectPath . '/src/data/devices.csv', 'w+');
+            $writer = Writer::createFromPath($this->projectPath . $this->csvfilename, 'w+');
             $writer->setDelimiter(';');
             $writer->insertOne(self::CSV_HEADER_KEYS);
 
@@ -192,7 +195,7 @@ class CsvDeviceRepository implements DeviceRepository
      */
     private function readDataFromCsv(): TabularDataReader
     {
-        $reader = Reader::createFromPath($this->projectPath . '/src/data/devices.csv', 'r');
+        $reader = Reader::createFromPath($this->projectPath . $this->csvfilename, 'r');
         $reader->setHeaderOffset(0);
         $reader->setDelimiter(';');
         $records = Statement::create()->process($reader);
@@ -208,7 +211,7 @@ class CsvDeviceRepository implements DeviceRepository
     public function writeDataToCsv(array $entryList): bool
     {
         try {
-            $writer = Writer::createFromPath($this->projectPath . '/src/data/devices.csv', 'w+');
+            $writer = Writer::createFromPath($this->projectPath . $this->csvfilename, 'w+');
             $writer->setDelimiter(';');
             $writer->insertOne(self::CSV_HEADER_KEYS);
 
