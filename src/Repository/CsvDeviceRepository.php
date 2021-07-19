@@ -71,12 +71,10 @@ class CsvDeviceRepository implements DeviceRepository
     public function getDevice($deviceNumber): Device
     {
         $records = $this->readDataFromCsv();
-
         $device = new Device();
 
         foreach ($records as $record) {
-            if ($record['device_id'] === $deviceNumber) {
-                $device = new Device();
+            if ($record['device_id'] === (string) $deviceNumber) {
                 $device->setDeviceId((int)$record['device_id'])
                     ->setDeviceType($record['device_type'])
                     ->setDamagePossible((bool)$record['damage_possible']);

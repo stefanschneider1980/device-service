@@ -23,9 +23,9 @@ class DeviceController extends AbstractController
      */
     public function showDevice($deviceNumber, GetDeviceInteractor $getDeviceInteractor): Response
     {
+
         try {
             $device = $getDeviceInteractor->execute((int)$deviceNumber);
-
             return new JsonResponse($device, 200);
         } catch (Throwable $exception) {
             return new Response($exception->getMessage(), 404);
