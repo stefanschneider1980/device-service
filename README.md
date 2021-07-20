@@ -29,6 +29,6 @@ $ docker-compose up or docker-compose up -d
 
 
 ### Swagger Dokumentation of the API
-In the Folder docs you can find a swagger documetation of the service
+In the Folder docs you can find a swagger documentation of the service and the endpoints
 
 
